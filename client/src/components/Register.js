@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Validation from './RegisterValidation';
 import axios from 'axios';
-
+import logo from './images/logotrans.png';
 
 const Register = () => {
     const [values,setValues] =useState({
@@ -37,7 +37,7 @@ const Register = () => {
     return (
         <main className='register'>
             <nav>
-                
+            <img src={logo} className="logo"></img>
             </nav>
             <div className="space"></div>
             <div className='registerf'>

@@ -94,6 +94,7 @@ nav{
   margin: auto;
 }
 button{
+	
   width: 350px;
 }
 
@@ -116,4 +117,23 @@ input{
 }
 span{
   color: red;
+}
+
+.navbuttons{
+	position: absolute;
+	right: 20px;
+	top: 10px;
+}
+
+.btn{
+	margin-left: 10px;
+	width: min(20vw,200px);
+}
+
+.logo{
+	
+	position: absolute;
+	scale: 400%;
+	left: 55px;
+	top: 5px;
 }

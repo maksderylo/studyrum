@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Validation from "./LoginValidation";
 import axios from 'axios';
+import logo from './images/logotrans.png';
 
 export const Login = () => {
 
@@ -40,7 +41,7 @@ export const Login = () => {
     return (
         <main className='login'>
             <nav>
-                <img src="zdjlogo.img" className="logo"></img>
+            <img src={logo} className="logo"></img>
             </nav>
             <div className="space"></div>
             <div className='loginf'>
