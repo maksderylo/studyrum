@@ -78,6 +78,81 @@ const threadId = generateID();
                 threads: threadList,
             });
         });
+
+app.get("/api/all/threads", async (req, res) => {
+    res.json({
+        message: "Threads passed!",
+        threads: threadList
+    });
+})
+
+app.post("/api/thread/like", (req, res) => {
+    //👇🏻 accepts the post id and the user id
+    const { threadId, userId } = req.body;
+    //👇🏻 gets the reacted post
+    const result = threadList.filter((thread) => thread.id === threadId);
+    //👇🏻 gets the likes property
+    const threadLikes = result[0].likes;
+    //👇🏻 authenticates the reaction
+    const authenticateReaction = threadLikes.filter((user) => user === userId);
+    //👇🏻 adds the users to the likes array
+    if (authenticateReaction.length === 0) {
+        threadLikes.push(userId);
+        return res.json({
+            message: "You've reacted to the post!",
+        });
+    }
+    //👇🏻 Returns an error user has reacted to the post earlier
+    res.json({
+        error_message: "You can only react once!",
+    });
+});
+
+app.post("/api/thread/replies", (req, res) => {
+    //👇🏻 The post ID
+    const { id } = req.body;
+    //👇🏻 searches for the post
+    const result = threadList.filter((thread) => thread.id === id);
+    //👇🏻 return the title and replies
+    res.json({
+        replies: result[0].replies,
+        title: result[0].title
+    });
+});
+
+app.post("/api/create/reply", async (req, res) => {
+    //👇🏻 accepts the post id, user id, and reply
+    const { id, userId, reply } = req.body;
+
+    //👇🏻 search for the exact post that was replied to
+    const result = threadList.filter((thread) => thread.id === id);
+    //👇🏻 search for the user via its id
+    db.query('SELECT name FROM login WHERE id = ?', [userId], (error, results) => {
+        if (error) {
+            console.error('Error fetching user name from database:', error);
+            res.status(500).json({ error: 'Internal server error' });
+          } else {
+            if (results.length > 0) {
+              const userName = results[0].name;                
+              result[0].replies.unshift({
+                userId: userId,
+                name: userName,
+                text: reply,
+            });
+        
+            res.json({
+                message: "Response added successfully!",
+            });
+
+            } else {
+              res.status(404).json({ error: 'User not found' });
+            }
+          }
+        });
+
+    
+});
+
 app.listen(8081, ()=> {    
     console.log("listening");
 })

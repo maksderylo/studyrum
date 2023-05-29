@@ -145,3 +145,8 @@ nav h1{
 	right:min(22vw,230px);
 	font-size: min(3vw,20px);
 }
+
+svg{
+	height: 20px;
+	color: black;
+}

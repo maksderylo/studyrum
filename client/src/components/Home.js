@@ -1,11 +1,23 @@
-import React, { useState } from "react";
+import React, {useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from './images/logotranssmall.png';
-
-
+import Likes from './utils/Likes.js'
+import Comments from './utils/Comments.js'
 
 const Home = () => {
     const [thread, setThread] = useState("");
+    const [threadList, setThreadList] = useState([]);
+    const navigate =useNavigate();
+
+    useEffect(() => {
+        fetch("http://localhost:8081/api/all/threads")
+        .then((res) => res.json())
+        .then((data) => {
+            setThreadList(data.threads);   
+        })
+        .catch((err) => console.error(err));
+
+    }, [navigate]);
 
     const createThread = () => {
         fetch("http://localhost:8081/api/create/thread", {
@@ -20,7 +32,8 @@ const Home = () => {
         })
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
+                alert(data.message);
+                setThreadList(data.threads);
             })
             .catch((err) => console.error(err));
     };
@@ -35,7 +48,7 @@ const Home = () => {
         setThread("");
         }
     };
-    const navigate =useNavigate();
+    
     const signOut = () => {
         localStorage.removeItem("_id");
         localStorage.removeItem("_name")
@@ -49,6 +62,9 @@ const Home = () => {
     };
 
     const username = localStorage.getItem("_name");
+
+    
+    
 
     return (
         <>
@@ -88,6 +104,21 @@ const Home = () => {
                     </div>
                     <button className='homeBtn'>CREATE THREAD</button>
                 </form>
+                <div className='thread__container'>
+                {threadList.map((thread) => (
+                    <div className='thread__item' key={thread.id}>
+                        <p>{thread.title}</p>
+                        <div className='react__container'>
+                            <Likes numberOfLikes={thread.likes.length} threadId={thread.id} />
+                            <Comments
+                                numberOfComments={thread.replies.length}
+                                threadId={thread.id}
+                                title={thread.title}
+                            />
+                        </div>
+                    </div>
+                ))}
+            </div>
             </main>
         </>
     );
