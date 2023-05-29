@@ -171,6 +171,8 @@ svg{
 	margin: auto;
 	border: 5px solid #EF9020;
 	border-radius: 36px;
+	display: flex;
+	flex-direction: column;
 }
 
 .homeForm input{
@@ -221,4 +223,42 @@ svg{
 	margin-top: 10px;
 	margin-bottom: 50px;
 	border-radius: 10px;
+}
+
+.textReplies{
+	margin-top: 10px;
+}
+
+.repliesOri{
+	float: right;
+}
+
+
+.homeForm label{
+	font-weight: bolder;
+}
+
+.modalInput{
+	width: 300px;
+	margin: auto;
+	margin-top: 10px;
+}
+
+.react__container{
+	position: relative;
+	float: right;
+}
+
+.underlinename{
+	position: relative;
+	float: right;
+	width: 100%;
+	border-radius: 10px;
+	background-color: black;
+	height: 3px;
+}
+
+.modalBtn{
+	margin: auto;
+	margin-top: 20px;
 }

@@ -60,7 +60,7 @@ app.post('/login',
 const threadList = [];
 
 app.post("/api/create/thread", async (req, res) => {
-const { thread, userId } = req.body;
+const { thread, userId, originator } = req.body;
 const threadId = generateID();
         
             //👇🏻 add post details to the array
@@ -69,6 +69,7 @@ const threadId = generateID();
                 title: thread.title,
                 description: thread.description,
                 userId,
+                originator,
                 replies: [],
                 likes: [],
             });
@@ -128,7 +129,8 @@ app.post("/api/thread/replies", (req, res) => {
     res.json({
         replies: result[0].replies,
         title: result[0].title,
-        description: result[0].description
+        description: result[0].description,
+        originator: result[0].originator
     });
 });
 

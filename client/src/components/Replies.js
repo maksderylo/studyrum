@@ -6,6 +6,7 @@ const Replies = () => {
     const [replyList, setReplyList] = useState([]);
     const [reply, setReply] = useState("");
     const [title, setTitle] = useState("");
+    const [originator, setOriginator] = useState("");
     const [description, setDesc] = useState("");
     const navigate = useNavigate();
     const { id } = useParams();
@@ -26,6 +27,7 @@ const Replies = () => {
                     setReplyList(data.replies);
                     setTitle(data.title);
                     setDesc(data.description);
+                    setOriginator(data.originator);
                 })
                 .catch((err) => console.error(err));
         };
@@ -57,6 +59,7 @@ const Replies = () => {
         //👇🏻 calls the function
         addReply();
         setReply("");
+        window.location.reload(true);
     };
 
     const signOut = () => {
@@ -100,22 +103,28 @@ const Replies = () => {
                 </nav>
                 <div className="space"></div>
                 <div className="Content">
+        <div className="textReplies">
         <h1 className='repliesTitle'>{title}</h1>
         <p className='repliesDesc'>{description}</p>
-        
-
+        <p className='repliesOri' style={{ opacity: "0.5" }}>by {originator}</p>
+        </div>
+        <div className="underline"></div>
+        <div className="spacesmall"></div>
         <div className='thread__container'>
             {replyList.map((reply) => (
                 <div className='thread__item'>
                     <p>{reply.text}</p>
-                    <div className='react__container'>
-                        <p style={{ opacity: "0.5" }}>by {reply.name}</p>
-                    </div>
+                        <p className='react__container' style={{ opacity: "0.5" }}>by {reply.name}                       
+                        </p>
+                        <div className="underlinename"></div>
+                    <div className="spacesmall"></div>
                 </div>
+                
             ))}
         </div>
-        <form className='modal__content' onSubmit={handleSubmitReply}>
-            <label htmlFor='reply'>Reply to the thread</label>
+        <div className="space"></div>
+        <form className='homeForm' onSubmit={handleSubmitReply}>
+            <label htmlFor='reply'>Reply to the thread!</label>
             <textarea
                 rows={5}
                 value={reply}

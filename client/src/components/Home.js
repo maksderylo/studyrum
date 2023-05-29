@@ -11,6 +11,7 @@ const Home = () => {
     });
     const [threadList, setThreadList] = useState([]);
     const navigate =useNavigate();
+    const username = localStorage.getItem("_name");
 
     useEffect(() => {
         fetch("http://localhost:8081/api/all/threads")
@@ -28,6 +29,7 @@ const Home = () => {
             body: JSON.stringify({
                 thread,
                 userId: localStorage.getItem("_id"),
+                originator: username
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -69,7 +71,7 @@ const Home = () => {
         navigate('/register');
     };
 
-    const username = localStorage.getItem("_name");
+    
 
     const handleInput = (e) => {
         setThread(prev => ({...prev, [e.target.name]: [e.target.value]}))

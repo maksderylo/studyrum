@@ -2,8 +2,6 @@ import React, {useState } from "react";
 
 const Likes = ({ numberOfLikes, threadId }) => {
 
-    const [likeColor, SetLike] = useState("");
-
     const handleLikeFunction = () => {
         fetch("http://localhost:8081/api/thread/like", {
             method: "POST",
@@ -17,9 +15,11 @@ const Likes = ({ numberOfLikes, threadId }) => {
         })
             .then((res) => res.json())
             .then((data) => {
-                alert(data.message);
+                
             })
             .catch((err) => console.error(err));
+
+            window.location.reload(true);
         };
 
     return (
