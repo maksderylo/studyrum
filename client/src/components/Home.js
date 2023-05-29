@@ -1,18 +1,44 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import logo from './images/logotrans.png';
+import logo from './images/logotranssmall.png';
+
+
 
 const Home = () => {
     const [thread, setThread] = useState("");
 
+    const createThread = () => {
+        fetch("http://localhost:8081/api/create/thread", {
+            method: "POST",
+            body: JSON.stringify({
+                thread,
+                userId: localStorage.getItem("_id"),
+            }),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+            })
+            .catch((err) => console.error(err));
+    };
+    
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log({ thread });
+        if(localStorage.getItem("_id")===null){
+            navigate('/')
+        }
+        else{
+        createThread();
         setThread("");
+        }
     };
     const navigate =useNavigate();
     const signOut = () => {
-        localStorage.removeItem("_id")
+        localStorage.removeItem("_id");
+        localStorage.removeItem("_name")
         window.location.reload(true);
     };
     const gotolog = () => {
@@ -22,6 +48,8 @@ const Home = () => {
         navigate('/register');
     };
 
+    const username = localStorage.getItem("_name");
+
     return (
         <>
             <main className='home'>
@@ -29,10 +57,12 @@ const Home = () => {
                     <img src={logo} className="logo"></img>
                     <div className="navbuttons">
                     {localStorage.getItem("_id") !== null && 
-                        <button className="signoutbtn" onClick={signOut}>
+                        <button className="btn" onClick={signOut}>
                             SIGN OUT
                         </button>
+                        
                     }
+                    {username && <h1>{username}</h1>}
                     {localStorage.getItem("_id") === null && 
                         <button className="btn" onClick={gotolog}>
                             LOG IN

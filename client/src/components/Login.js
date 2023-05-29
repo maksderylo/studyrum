@@ -2,10 +2,15 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Validation from "./LoginValidation";
 import axios from 'axios';
-import logo from './images/logotrans.png';
+import logo from './images/logotranssmall.png';
+import bcrypt from 'bcryptjs';
+
+
 
 export const Login = () => {
-
+    const [wrongpass,setWrong] =useState({
+        fail:''
+    })
     const [values,setValues] =useState({
         email: '',
         password: ''
@@ -16,16 +21,26 @@ export const Login = () => {
         setValues(prev => ({...prev, [e.target.name]: [e.target.value]}))
     }
     
+    const gohome = () => {
+        navigate('/dashboard');
+    };
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        setErrors(Validation(values))
-        if(errors.password === "" && errors.email === ""){
+        const newErrors = Validation(values);
+        setErrors(newErrors);
+
+        if(newErrors.password === "" && newErrors.email === ""){
+            try {
+            const hashedPassword = await bcrypt.hash(values.password.toString(), '$2a$10$CwTycUXWue0Thq9StjUM0u');
+            values.password = hashedPassword;
             axios.post('http://localhost:8081/login', values)
             .then(res => {
+                    errors.password=res.data.errorMessage;
                     if(res.data.errorMessage ==='Success'){
                         localStorage.setItem("_id",res.data.id);
+                        localStorage.setItem("_name",res.data.name);
                         navigate('/dashboard');
                     }
                     else{
@@ -33,7 +48,10 @@ export const Login = () => {
                     }
             })
             .catch(err => console.log(err));
-            
+            }   catch (error) {
+            console.log(error);
+          }
+
         }
         
     };
@@ -41,12 +59,12 @@ export const Login = () => {
     return (
         <main className='login'>
             <nav>
-            <img src={logo} className="logo"></img>
+            <img src={logo} className="logo" onClick={gohome}></img>
             </nav>
             <div className="space"></div>
             <div className='loginf'>
             <h1 className='loginTitle'>Log into your account</h1>
-            <form className='loginForm' >
+            <form className='loginForm' onSubmit={handleSubmit}>
                 <label htmlFor='email'>Email Address</label>
                 <br></br>
                 <input
@@ -67,9 +85,10 @@ export const Login = () => {
                     id='password'
                     onChange={handleInput}
                 />
+                {errors.password && <span>Wrong email or password!</span>}
                 <br></br>
                 <div className="break"></div>
-                <button className='loginBtn' onClick={handleSubmit}>LOG IN</button>
+                <button className='loginBtn'>LOG IN</button>
                 <p>
                     Don't have an account? <Link to='/register'>Create one</Link>
                 </p>
