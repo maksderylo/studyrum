@@ -9,7 +9,7 @@ const Comments = ({ numberOfComments, threadId }) => {
     };
 
     return (
-        <div className='likes__container'>
+        <div className='ComentCont'>
             <svg
                 xmlns='http://www.w3.org/2000/svg'
                 viewBox='0 0 24 24'
@@ -23,8 +23,8 @@ const Comments = ({ numberOfComments, threadId }) => {
                     clipRule='evenodd'
                 />
             </svg>
-            <p style={{ color: "#434242" }}>
-                {numberOfComments === 0 ? "" : numberOfComments}
+            <p>
+                {numberOfComments}
             </p>
         </div>
     );

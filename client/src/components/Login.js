@@ -8,9 +8,6 @@ import bcrypt from 'bcryptjs';
 
 
 export const Login = () => {
-    const [wrongpass,setWrong] =useState({
-        fail:''
-    })
     const [values,setValues] =useState({
         email: '',
         password: ''

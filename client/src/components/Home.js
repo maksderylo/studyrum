@@ -5,7 +5,10 @@ import Likes from './utils/Likes.js'
 import Comments from './utils/Comments.js'
 
 const Home = () => {
-    const [thread, setThread] = useState("");
+    const [thread, setThread] = useState({
+        title: '',
+        description: ''
+    });
     const [threadList, setThreadList] = useState([]);
     const navigate =useNavigate();
 
@@ -40,13 +43,18 @@ const Home = () => {
     
     const handleSubmit = (e) => {
         e.preventDefault();
+        
         if(localStorage.getItem("_id")===null){
             navigate('/')
         }
         else{
         createThread();
-        setThread("");
+        setThread({
+            title:'',
+            description:''
+        })
         }
+        
     };
     
     const signOut = () => {
@@ -63,7 +71,9 @@ const Home = () => {
 
     const username = localStorage.getItem("_name");
 
-    
+    const handleInput = (e) => {
+        setThread(prev => ({...prev, [e.target.name]: [e.target.value]}))
+    }
     
 
     return (
@@ -90,25 +100,40 @@ const Home = () => {
                         </button>
                     }</div>
                 </nav>
-                <h2 className='homeTitle'>Create a Thread</h2>
+                <div className="space"></div>
+                <div className="Content">
                 <form className='homeForm' onSubmit={handleSubmit}>
+                <h2 className='homeTitle'>Create a Thread</h2>
                     <div className='home__container'>
-                        <label htmlFor='thread'>Title / Description</label>
+                        <label htmlFor='thread'>Title</label>
                         <input
                             type='text'
-                            name='thread'
+                            name='title'
+                            id='title'
+                            value={thread.title}
                             required
-                            value={thread}
-                            onChange={(e) => setThread(e.target.value)}
+                            onChange={handleInput}
+                        />
+                        <label htmlFor='thread'>Description</label>
+                        <input
+                            type='text'
+                            name='description'
+                            id='description'
+                            value={thread.description}
+                            required
+                            onChange={handleInput}
                         />
                     </div>
                     <button className='homeBtn'>CREATE THREAD</button>
                 </form>
-                <div className='thread__container'>
+                <div className="space"></div>
+                <div className='threadCont'>
                 {threadList.map((thread) => (
-                    <div className='thread__item' key={thread.id}>
-                        <p>{thread.title}</p>
-                        <div className='react__container'>
+                    <div className='threadItem' key={thread.id}>
+                        <div className="threadText">
+                        <h1>{thread.title}</h1>
+                        <p>{thread.description}</p></div>
+                        <div className='reactCont'>
                             <Likes numberOfLikes={thread.likes.length} threadId={thread.id} />
                             <Comments
                                 numberOfComments={thread.replies.length}
@@ -116,8 +141,10 @@ const Home = () => {
                                 title={thread.title}
                             />
                         </div>
+                        <div className="underline"></div>
                     </div>
                 ))}
+            </div>
             </div>
             </main>
         </>
