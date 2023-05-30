@@ -102,7 +102,8 @@ const Replies = () => {
                     }</div>
                 </nav>
                 <div className="space"></div>
-                <div className="Content">
+        <div id='work'>
+        <div className="Content">
         <div className="textReplies">
         <h1 className='repliesTitle'>{title}</h1>
         <p className='repliesDesc'>{description}</p>
@@ -122,7 +123,8 @@ const Replies = () => {
                 
             ))}
         </div>
-        <div className="space"></div>
+        <div className="spacesmall"></div>
+        </div>
         <form className='homeForm' onSubmit={handleSubmitReply}>
             <label htmlFor='reply'>Reply to the thread!</label>
             <textarea

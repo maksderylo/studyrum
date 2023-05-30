@@ -10,8 +10,12 @@ const generateID = () => Math.random().toString(36).substring(2, 10);
 
 const app = express();app.use(cors());app.use(express.json());
 const db = mysql.createConnection({ 
-    host: "localhost",    user: "root",    password: "",    database: "signup"
+    host: "localhost",    
+    user: "root",    
+    password: "",    
+    database: "signup"
 })
+
 app.post('/signup', (req, res) => {
     const sql = "INSERT INTO login (name,email,password) VALUES (?)";
     const values = [
@@ -168,5 +172,5 @@ app.post("/api/create/reply", async (req, res) => {
 });
 
 app.listen(8081, ()=> {    
-    console.log("listening");
+    console.log("listening on port 8081");
 })

@@ -102,8 +102,7 @@ const Home = () => {
                         </button>
                     }</div>
                 </nav>
-                <div className="space"></div>
-                <div className="Content">
+                <div id="work">
                 <form className='homeForm' onSubmit={handleSubmit}>
                 <h2 className='homeTitle'>Create a Thread</h2>
                     <div className='home__container'>
@@ -128,7 +127,9 @@ const Home = () => {
                     </div>
                     <button className='homeBtn'>CREATE THREAD</button>
                 </form>
-                <div className="space"></div>
+                <div className="Content">
+                <h1>Latest Threads:</h1>
+                <div className="spacesmall"></div>
                 <div className='threadCont'>
                 {threadList.map((thread) => (
                     <div className='threadItem' key={thread.id}>
@@ -146,6 +147,7 @@ const Home = () => {
                         <div className="underline"></div>
                     </div>
                 ))}
+            </div>
             </div>
             </div>
             </main>
